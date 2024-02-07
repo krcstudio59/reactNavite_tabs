@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, Image, Animated, Easing} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomePage from './pages/HomeScreen';
@@ -7,8 +7,13 @@ import SettingsPage from './pages/SettingsScreen';
 import SwapPage from './pages/SwapScreen';
 import MessagesPage from './pages/MessagesScreen';
 import TransactionsPage from './pages/TransactionsScreen';
+import imageasset from './assets/icon.png';
 
 function HomeScreen() {
+
+  
+
+
   return (
     <HomePage></HomePage>
   );
@@ -39,6 +44,24 @@ function MessagesScreen() {
 }
 
 function MyTabBar({ state, descriptors, navigation }) {
+
+  spinValue = new Animated.Value(0);
+
+  Animated.timing(
+      this.spinValue,
+      {
+          toValue: 1,
+          duration: 500,
+          easing: Easing.linear,
+          useNativeDriver: true
+      }
+  ).start()
+
+  const spin = this.spinValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['0deg', '360deg']
+  })
+
   return (
     <View style={{ flexDirection: 'row', backgroundColor: "blue"}}>
       {state.routes.map((route, index) => {
@@ -80,8 +103,12 @@ function MyTabBar({ state, descriptors, navigation }) {
             onLongPress={onLongPress}
             style={{ flex: 1 }}
           >
-          <View style={styles.Button}>
             
+          <View style={styles.Button}>
+            <Animated.Image
+              style={{transform: [{rotate: spin}], width: 50, height: 50}}
+              source={imageasset}
+            />
             <Text style={{ color: isFocused ? '#673ab7' : '#222' , fontSize: 10}}>
               {label}
             </Text>
