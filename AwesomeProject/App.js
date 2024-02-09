@@ -9,11 +9,9 @@ import MessagesPage from './pages/MessagesScreen';
 import TransactionsPage from './pages/TransactionsScreen';
 import imageasset from './assets/icon.png';
 
+
+
 function HomeScreen() {
-
-  
-
-
   return (
     <HomePage></HomePage>
   );
@@ -53,13 +51,15 @@ function MyTabBar({ state, descriptors, navigation }) {
           toValue: 1,
           duration: 500,
           easing: Easing.linear,
-          useNativeDriver: true
+          useNativeDriver: true,
+          
       }
   ).start()
 
   const spin = this.spinValue.interpolate({
       inputRange: [0, 1],
-      outputRange: ['0deg', '360deg']
+      outputRange: ['0deg', '360deg'],
+      
   })
 
   return (
@@ -105,10 +105,18 @@ function MyTabBar({ state, descriptors, navigation }) {
           >
             
           <View style={styles.Button}>
-            <Animated.Image
-              style={{transform: [{rotate: spin}], width: 50, height: 50}}
-              source={imageasset}
-            />
+          
+            <View>
+              {label=="Swap"&&<Animated.View 
+              style={{transform: [{rotate: '45deg'},{rotate: spin}], width: 80, height: 80, backgroundColor: 'green', borderRadius: 20, }}
+              source={imageasset}/>}
+            </View>
+
+            
+                
+              
+              
+            
             <Text style={{ color: isFocused ? '#673ab7' : '#222' , fontSize: 10}}>
               {label}
             </Text>
@@ -127,12 +135,17 @@ const Tab = createBottomTabNavigator();
 
 
 export default function App() {
+
+  
+
+
   return (
     <NavigationContainer>
+      
       <Tab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
         <Tab.Screen name="Messages" component={MessagesPage} />
         <Tab.Screen name="Wallet" component={HomeScreen} />
-        <Tab.Screen name="Swap" component={SwapPage} />
+        <Tab.Screen name="Swap" component={SwapPage} listeners={{tabPress: e=>{console.log("123")}}}/>
         <Tab.Screen name="Transactions" component={TransactionsPage} />
         <Tab.Screen name="Settings" component={SettingsPage} />
       </Tab.Navigator>
